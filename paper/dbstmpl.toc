@@ -1,0 +1,35 @@
+\babel@toc {english}{}
+\contentsline {chapter}{\numberline {1}Introduction}{3}% 
+\contentsline {chapter}{\numberline {2}Presets}{4}% 
+\contentsline {section}{\numberline {2.1}Introduction to StarCraftII Reinforcement Learning}{4}% 
+\contentsline {subsection}{\numberline {2.1.1}Game mechanics}{4}% 
+\contentsline {subsection}{\numberline {2.1.2}SMAC - A StarCraftII multi-agent environment}{4}% 
+\contentsline {subsection}{\numberline {2.1.3}PyMARL - A multi-agent reinforcement learning algorithm framework}{4}% 
+\contentsline {section}{\numberline {2.2}Reinforcement Learning Basics}{4}% 
+\contentsline {subsection}{\numberline {2.2.1}MDP - Markov Decision Process}{4}% 
+\contentsline {subsection}{\numberline {2.2.2}Dec-POMDP - Decentralized Partially Observable MDP}{4}% 
+\contentsline {section}{\numberline {2.3}Basic Reinforcement Learning Algorithms}{4}% 
+\contentsline {subsection}{\numberline {2.3.1}Q-Learning}{4}% 
+\contentsline {subsection}{\numberline {2.3.2}DQN - Deep Q-Network}{5}% 
+\contentsline {subsection}{\numberline {2.3.3}Actor-Critic}{5}% 
+\contentsline {subsection}{\numberline {2.3.4}A3C - Asynchronous Actor-Critic Agents}{5}% 
+\contentsline {subsection}{\numberline {2.3.5}BPTT - Truncated back-propagation through time }{5}% 
+\contentsline {section}{\numberline {2.4}Problems in MARL}{5}% 
+\contentsline {subsection}{\numberline {2.4.1}Credit Assignment Problem}{5}% 
+\contentsline {subsection}{\numberline {2.4.2}Stability of experience replay}{5}% 
+\contentsline {subsection}{\numberline {2.4.3}Non-stationarity of the environment}{5}% 
+\contentsline {subsection}{\numberline {2.4.4}Centralized learning of decentralised policies}{6}% 
+\contentsline {subsection}{\numberline {2.4.5}Lazy agent problem}{6}% 
+\contentsline {section}{\numberline {2.5}Motivation for multi-agent reinforcement learning}{6}% 
+\contentsline {chapter}{\numberline {3}Related work on MARL}{7}% 
+\contentsline {section}{\numberline {3.1}JAL - Joint Action Learning}{7}% 
+\contentsline {section}{\numberline {3.2}IL - Independent Learning}{7}% 
+\contentsline {section}{\numberline {3.3}IQL - Independent Q-Learning}{7}% 
+\contentsline {section}{\numberline {3.4}VDN - Value-decomposition Networks}{7}% 
+\contentsline {section}{\numberline {3.5}QMIX - Monotonic Value Function Factorisation}{8}% 
+\contentsline {section}{\numberline {3.6}COMA - Counterfactual Multi-Agent Policy Gradients}{8}% 
+\contentsline {section}{\numberline {3.7}Central-V}{9}% 
+\contentsline {section}{\numberline {3.8}ASN - Action Semantic Networks}{9}% 
+\contentsline {section}{\numberline {3.9}MACKRL - Multi-Agent Common Knowledge Reinforcement Learning}{9}% 
+\contentsline {subsection}{\numberline {3.9.1}Common Knowledge Concept}{9}% 
+\contentsline {chapter}{Bibliography}{10}% 

@@ -1,0 +1,16 @@
+\begin{thebibliography}{1}
+
+\bibitem{ABKS99}
+M.~Ankerst, M.~M. Breunig, H.-P. Kriegel, and J.~Sander.
+\newblock Optics: Ordering points to identify the clustering structure.
+\newblock In {\em Proc.\ ACM SIGMOD Int.\ Conf.\ on Management of Data
+  (SIGMOD'99), Philadelphia, PA}, pages 49--60, 1999.
+
+\bibitem{EKSX96}
+M.~Ester, H.-P. Kriegel, J.~Sander, and X.~Xu.
+\newblock A density-based algorithm for discovering clusters in large spatial
+  databases with noise.
+\newblock In {\em Proc.\ 2nd Int.\ Conf.\ on Knowledge Discovery and Data
+  Mining (KDD'96), Portland, OR}, pages 226--231, 1996.
+
+\end{thebibliography}
