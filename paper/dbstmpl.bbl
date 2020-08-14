@@ -1,16 +1,29 @@
 \begin{thebibliography}{1}
 
-\bibitem{ABKS99}
-M.~Ankerst, M.~M. Breunig, H.-P. Kriegel, and J.~Sander.
-\newblock Optics: Ordering points to identify the clustering structure.
-\newblock In {\em Proc.\ ACM SIGMOD Int.\ Conf.\ on Management of Data
-  (SIGMOD'99), Philadelphia, PA}, pages 49--60, 1999.
+\bibitem{NIPS2005_2951}
+Drew Bagnell and Andrew~Y. Ng.
+\newblock On local rewards and scaling distributed reinforcement learning.
+\newblock In Y.~Weiss, B.~Sch\"{o}lkopf, and J.~C. Platt, editors, {\em
+  Advances in Neural Information Processing Systems 18}, pages 91--98. MIT
+  Press, 2006.
 
-\bibitem{EKSX96}
-M.~Ester, H.-P. Kriegel, J.~Sander, and X.~Xu.
-\newblock A density-based algorithm for discovering clusters in large spatial
-  databases with noise.
-\newblock In {\em Proc.\ 2nd Int.\ Conf.\ on Knowledge Discovery and Data
-  Mining (KDD'96), Portland, OR}, pages 226--231, 1996.
+\bibitem{foerster2018counterfactual}
+Jakob~N Foerster, Gregory Farquhar, Triantafyllos Afouras, Nantas Nardelli, and
+  Shimon Whiteson.
+\newblock Counterfactual multi-agent policy gradients.
+\newblock In {\em Thirty-second AAAI conference on artificial intelligence},
+  2018.
+
+\bibitem{samvelyan19smac}
+Mikayel Samvelyan, Tabish Rashid, Christian~Schroeder de~Witt, Gregory
+  Farquhar, Nantas Nardelli, Tim G.~J. Rudner, Chia-Man Hung, Philiph H.~S.
+  Torr, Jakob Foerster, and Shimon Whiteson.
+\newblock {The} {StarCraft} {Multi}-{Agent} {Challenge}.
+\newblock {\em CoRR}, abs/1902.04043, 2019.
+
+\bibitem{sutton2018reinforcement}
+Richard~S Sutton and Andrew~G Barto.
+\newblock {\em Reinforcement learning: An introduction}.
+\newblock MIT press, 2018.
 
 \end{thebibliography}

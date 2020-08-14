@@ -1,0 +1,57 @@
+// Map: 3m
+// QMIX, QTRAN, VDN, IQL
+
+{
+    'state': {
+        'vshape': 48
+    }, 
+    'obs': {
+        'vshape': 30, 
+        'group': 'agents'
+    }, 
+    'actions': {
+        'vshape': (1,), 
+        'group': 'agents', 
+        'dtype': torch.int64
+    }, 
+    'avail_actions': {
+        'vshape': (9,), 
+        'group': 'agents', 
+        'dtype': torch.int32
+    }, 
+    'reward': {
+        'vshape': (1,)
+    }, 
+    'terminated': {
+        'vshape': (1,), 
+        'dtype': torch.uint8
+    }
+}
+
+// COMA
+{
+    'state': {
+        'vshape': 21
+    }, 
+    'obs': {
+        'vshape': 30, 
+        'group': 'agents'
+    }, 
+    'actions': {
+        'vshape': (1,), 
+        'group': 'agents', 
+        'dtype': torch.int64
+    }, 
+    'avail_actions': {
+        'vshape': (9,), 
+        'group': 'agents', 
+        'dtype': torch.int32
+    }, 
+    'reward': {
+        'vshape': (1,)
+    }, 
+    'terminated': {
+        'vshape': (1,), 
+        'dtype': torch.uint8
+    }
+}

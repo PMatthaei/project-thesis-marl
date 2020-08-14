@@ -1,402 +1,301 @@
 \chapter{Introduction}
 
+TODO:
 
+- What is Multi-Agent Reinforcement Learning (MARL)
 
-
-%
-%
-%
 \chapter{Presets}
-%
-%
-%
-\section{Introduction to StarCraftII Reinforcement Learning}
 
-\subsection{Game mechanics}
+\section{PyMARL - A multi-agent reinforcement learning framework}
 
-\subsection{SMAC - A StarCraftII multi-agent environment}
+In order to setup PyMARL(fork) with extensions on local and combined rewards, the Readme in the following repository \url{https://github.com/PMatthaei/pymarl} contains a step by step guide. The main repository of PyMARL can be found at \url{https://github.com/oxwhirl/pymarl}. \cite{samvelyan19smac}
 
-\subsection{PyMARL - A multi-agent reinforcement learning algorithm framework}
+TODO:
 
-\section{Reinforcement Learning Basics}
+- Why these two algorithms only?
 
-\subsection{MDP - Markov Decision Process}
+- What are they doing?
 
-\subsection{Dec-POMDP - Decentralized Partially Observable MDP}
-A Concise Introduction to Decentralized POMDPs.
+- What are problems?
 
-Optimal and approximate q-value functions for decentralized pomdps
+\subsection{Value Decompostion Networks}
+\subsection{QMIX - Monotonic Value Function Factorisation}
 
-\section{Basic Reinforcement Learning Algorithms}
+\section{StarCraftII Multi Agent Challenge Environment}
 
+PyMARL`s multi-agent reinforcement learning algorithms are running in the SMAC environment \url{https://github.com/oxwhirl/smac}. \cite{samvelyan19smac} The following sections are disecting the construction of the reward in SMAC.
 
-\subsection{Q-Learning}
+\subsection{Reward function}
 
-helps with learning without the explicit information about the dynamics of the environment or the rewards. allows to estimate the value or quality of an action in a particular state of the environment.
-
-\begin{center}
-	$ Q_{i+1}(s_t, a_t)= (1-\eta_t)Q_i(s_t, a_t) +\eta_t(r_t+\gamma max_aQ_i(s_t, a_t))$
+The StarCraftII Multi Agent Challenge (SMAC) environment supports sparse and dense reward functions. This can be controlled via the configuration parameter \verb|reward_sparse|. Per default sparse rewards are set to \verb|False|, resulting in dense rewards for all agents interacting with the environment. In the following other important configuration parameters regarding the reward function and their default values are listed:
+\begin{itemize}
+	  
+	\item \verb|reward_death_value: -10|
+	\newline Reward for death of a unit.
 	
-		$ \eta_t \in (0,1)$ is the learning rate
-\end{center}
+	\item \verb|reward_defeat: 0|
+	\newline Reward for losing a round.
+	
+	\item \verb|reward_negative_scale: 0.5|
+	\newline Scale negative rewards to count just half as much as positive rewards.
+	
+	\item \verb|reward_only_positive: True|
+	\newline Do not reward unit death. %TODO shield regen?
+		
+	\item \verb|reward_scale_rate: 20|
+	\newline Scale rate to normalize rewards. (20 is the maximum achievable reward)
+	
+	\item \verb|reward_win: 200|
+	\newline Reward for winning a round.
+	
+\end{itemize}
 
+The function \verb|reward_battle| instantly returns zero if \verb|reward_sparse| is set to \verb|True| since battle actions are only used for sparse rewarding. Rewards concerning overall win and loss are added during the step implementation of the environment. In the following description of the reward construction only alive units are considered.
 
-Learning from delayed rewards
+The sparse (battle) reward is constituted by the accumulative hit/shield point damage dealt to 
+all enemy units as well as the \verb|reward_death_value| for each killed enemy.
+In case only positive rewards are configured, allied casualties are taken into account. Hereby the damage dealt to ally units and \verb|reward_death_value| per ally unit killed are scaled by \verb|reward_negative_scale| and afterwards deduced from the reward. Therefore received damage of allies and their death is penalized.
 
-\subsection{DQN - Deep Q-Network}
+Since the reward is accumulated, the contribution of each unit/agent can not be deduced afterwards. The python code corresponding to the global reward function can be found in the appendix in \autoref{sec:reward_global_python_code}.
 
-Model free, approximate Q-value function with CNN
+\section{Global and local reward functions}\label{sec:global_local_r_function}
+The global reward function $R^{global}(s, a)=\dfrac{1}{n} \sum_{i=1}^{n} R_i\left(s^{(i)}, a^{(i)}\right)$ in a multi-agent setup is defined as a function returning the total reward for a group of \textit{n} agents. Each agent is provided with this reward as result of his own action contributing to the joint action.
 
-\begin{center}
-	Squared Temporal Difference (TD) Error:
-	$ \mathcal{L}(\theta) = \sum_{i=1}^b [(y_i^{DQN} - Q(s,u;\theta))^2]$
-\end{center}
+On the other side, a local reward function $R_{i}^{local}\left(s^{(i)}, a^{(i)}\right)$ should reward an action taken by a single agent \textit{i} within a group. Accumulating all local rewards of agents in the same group should result in the global reward calculated for this group. \cite{NIPS2005_2951}
 
-\begin{center}
-	$ y_i^{DQN} = r + \gamma max_{u^{'}}Q(s^{'},u^{'};\theta^-) $
-\end{center}
+\subsection{Rewards in Multi-Agent Reinforcement Learning}
+\cite{NIPS2005_2951} Shows that most algorithms "will need to see $\tilde{\Omega}(n)$ trajectories in the worst case to achieve good performance". An important definition arising from this paper is the neighborhood of an agent i, which describes the subset of agents that are directly influenced by agent i`s state.
 
-where $\theta^-$ are parameters from a target network copying $\theta$ periodically
-.\newline 
+\subsubsection{Credit Assignment Problem}
+% TODO: Describe problem via sources
+In case a group of agents is producing a joint or collective action in an environment, a single reward signal loses information about each agents contribution to the reward. In this scenario, the credit assignment problem is targeting the question which agents should receive more credit for positively contributing to the global reward signal. \cite{sutton2018reinforcement}
+
+% TODO: which algorithms have TD error? maybe qtran coma etc do not use it and are therefore bad for comparsion
+For learning algorithms relying on the TD error computed on the global reward - such as VDN - the obtained gradient for each agent does not provide information about how this agents contribution to the reward. With increasing amount of agents, the gradient becomes noisy due to the fact that some agents might be exploring.
+\cite{foerster2018counterfactual}
+
+\subsection{Challenges in reward shaping}
+% TODO: Describe problems arising from credit assignment. When is reward justified? -> complex and heavily depends on game mechanics
+
+\chapter{Dynamic reward composition}
+\section{Idea}
+
+Since the global reward function can de decomposed into a sum of agent-specific local reward functions we can choose arbitrary mixins of these functions. In other words, there is the possibility to choose which reward signal is predominantly influencing the agents policy. Agents which rely more on the local reward may suffer less from the credit assignment problem but are prone to acting selfishly in situations where team work is necessary.
+
+Agents focusing more on global rewards for their training procedure are denoted as "altruistic" or "selfless" since their actions will be choosen on the intention of increasing profit for their team.
+
+Agents concentrating on local rewards for their training procedure are denoted as "selfish" since their actions will be choosen in a way to increase their own profit.
+
+The agents reward focus can be set via a combination weight $c \in [0,1]$. A combination weight of $c=1$ constitutes a totally "self-interested" agent while choosing $c=0$ observes team performance only.
+\section{Implementing a local reward function}
+
+In order to prove the effectiveness of dynamic reward composition, a local reward function is needed in the SMAC environment. Therefore the current global reward function has to be analyzed to identify reasonable decompositions. It should be mentioned that reward shaping is a difficult topic and most algorithms run on simple global reward functions within their environment to prove independence of reward shaping since their target is to solve the problem without encoding the solution completely into the reward function. The implementation of a local reward function in this paper is targeting to be close to the global reward function of the SMAC environment to allow for comparsion of already conducted experiments. Therefore the following decisions have been made.
  
-Reinforcement learning for robots using neural networks. 
+Each agent receives only his own health difference to the previous step as positive reward. This is very close to the global implementation where all allied units are considered.
 
-Playing atari with deep reinforcement learning.
+During action selection, each agent which executed an attack action on an enemy is registered. Based on this targeting data, the total dealt damage and kill reward in a step is evenly split between all attacking agents. Passive agents which do not attack will not receive reward. Since the environment is deterministic in its attack damage calculation, the same amount of damage can be expected by the same unit in a step. This assumption does not hold with heterogeneous team compositions which is one reason to exclude them from the following experiments.
 
-Human-level control through deep reinforcement learning. Nature,
+Natural global rewards such as round loss or win are evenly distributed between all agents.
 
-Prioritized experience replay
+The python code corresponding to the local reward function  can be found in the appendix in \autoref{sec:reward_local_python_code}.
 
-\subsection{Actor-Critic}
+\section{Combining local and global rewards}
 
-\subsection{A3C - Asynchronous Actor-Critic Agents}
+In a group of \textit{n} cooperating agents, each agent \textit{i} chooses an action \newline 
+$A = (a_{1},a_{2},...,a_{i}), i = n$ and is assigned his own reward combination weight $W_{reward} = (w_{1},w_{2},...,w_{i})$. Since the global reward is composed of the local rewards as depicted in \autoref{sec:global_local_r_function}, local and global rewards can be linearly mixed. Via the combination weight $w_{i}$ the combined reward can be shaped to reinforce local or global rewards. Thus the combined reward for an agent \textit{i} is
 
-\subsection{BPTT - Truncated back-propagation through time }
-%
-%
-%
-\section{Problems in MARL}
-%
-%
-%
-\subsection{Credit Assignment Problem}
-
-Because the TD error considers only
-global rewards, the gradient computed for each actor does
-not explicitly reason about how that particular agents actions
-contribute to that global reward. Since the other agents
-may be exploring, the gradient for that agent becomes very
-noisy, particularly when there are many agents. -COMA
-
-\subsection{Stability of experience replay}
-
-\subsection{Non-stationarity of the environment}
-
-Changing policies of agents affect each others learning-> no convergence
-exploration, 
-
-Agents are part of other agents environment - MACKRL Tan
-
-\subsection{Centralized learning of decentralised policies}
-
-decentralised policies = executed independently = policy conditions on agents own action-observation history
-
-learned centralised (work (Rashid et al., 2018; Foerster et al.,
-22016, 2017, 2018; Kraemer Banerjee, 2016; Jorge et al., 2016),)
-
-\subsection{Lazy agent problem}
- TODO
-- "The distributed nature of the learning offers new benefits but also challenges such
-as the definition of good learning goals or the convergence and consistency of algorithms [Sch14, BBDS08]" IQL
-
-- "multiagent case ,environment state transitions and rewards are
-affected by  joint action of all agents. -> value of an agent?s action depends on actions of others -> each agent must keep track of each of other learning agents, possibly resulting in an ever-moving target. In general, learning in the presence of other agents
-requires a delicate trade-off between the stability and adaptive behavior of each agent." IQL
-
--"decentralised poli-
-cies, which severely limit the agents? ability to coordinate their behaviour."-MACKRL
-
-"Often agents are forced to ignore information in their individual observations that
-would in principle be useful for maximising reward, because acting on it would make their behaviour
-less predictable to their teammates. This limitation is particularly salient in IL, which cannot solve
-many coordination tasks (Claus Boutilier, 1998)."
-%
-%
-%
-¸\section{Motivation for multi-agent reinforcement learning}
-
-single agents typically fare
-poorly on such tasks, since the joint action space of the
-agents grows exponentially with the number of agents. - COMA
-%
-%
-%
-\chapter{Related work on MARL}
-%
-%
-%
-\section{JAL - Joint Action Learning}
-Claus Boutilier 1998 - MACKRL
-\section{IL - Independent Learning}
-Tan 1993 - MACKRL
-%
-%
-%
-\section{IQL - Independent Q-Learning}
-Two agents controlled by independent Deep Q-Networks as described in [MKS+15], "simplest method consists of using an autonomous Q-learning algorithm for each agent
-in the environment, thereby using the environment as the sole source of interaction between agents."
-%
-%
-%
-\section{VDN - Value-decomposition Networks}
-The main idea behind VDN arises from the assumption that joint-action-value functions can be decomposed into $ \mathit{d} $ single-agent value functions which are then composed via summation into the join-action-value function.
+% TODO: is it really s_i? not the whole state of all agents since we are using them to calculate absolute damage etc
 
 \begin{center}
-	$ Q((h^1, h^2, ..., h^d),(a^1, a^2, ..., a^d)) \approx \sum_{i=1}^{d} \tilde{Q}_i(h^i, a^i) $
+	$R_{i}^{combined}\left(s^{(i)}, a^{(i)}\right) = w_{i} * R_{i}\left(s^{(i)}, a^{(i)}\right) + \dfrac{1}{n} * \sum_{j=1}^{n} (1-w_{j}) * R_{i}\left(s^{(i)}, a^{(i)}\right) $
 \end{center}
 
-Thus each agents value-function $ \tilde{Q}_i $ depends solely on it`s local observation. The history of agent $\mathit{i}$ is denoted as $h^i$ while $a^i$ corresponds to the agent`s current action. The history $h_t = a_1o_1r_1,...,a_{t-1}o_{t-1},r_{t-1}$ of an agent includes it`s action, observation and reward at a given timestep up until a the last registered timestep ${t-1}$. 
-
-The agent`s value-function is learned via back-propagation of the gradients resulting from applying the Q-learning rule on the joint reward and the local observations. $ \tilde{Q}_i $ is therefore independent of specific rewards.
-
-As a result each agent independently performs greedy actions based on it`s own $ \tilde{Q}_i $.
-%
-%
-%
-
-\section{QMIX - Monotonic Value Function Factorisation}
-The basic idea behind QMIX results from the insight that full factorisation as performed in VDN can be replaced with a constraint on the joint-action-value function:
+Â¸where $w_{i}$ is the combination weight for the currently observed agent and $w_{j}$ are weights from group members of agent \textit{i}. The recombined global reward is therefore:
 
 \begin{center}
-	$ argmax_u Q() = \dottedcolumn{3}{argmax_u^1 Q_1()}{argmax_u^n Q_n()}$
+	$R_{global}^{combined} = \dfrac{1}{n} * \sum_{j=1}^{n} (1-w_{j}) * R_{i}\left(s^{(i)}, a^{(i)}\right) $
 \end{center}
-TODO: explain constraint
 
-Further monotonicity is required due the constraint:
+The following experiments have been conducted with a uniform weight for all agents resulting in $w_{1}=w_{2}=...=w_{i}=w$. Therefore $R_{global}^{combined}$ can be rewritten to
 
 \begin{center}
-	$ \frac{\partial Q}{\partial Q_a} \geq 0, \forall a \in A$
+	$R_{global}^{combined} = \dfrac{1}{n} * \sum_{j=1}^{n} (1-\mathbf{w}) * R_{i}\left(s^{(i)}, a^{(i)}\right) = (1-w) * \dfrac{1}{n} * \sum_{j=1}^{n}  * R_{i}\left(s^{(i)}, a^{(i)}\right) = (1-w) * R^{global}(s, a)$
 \end{center}
 
-In order to fulfill the above requirements, various agents networks as well as a hypernetwork and mixing network are deployed.
-Each agent network is comprised as a DRQN representing its individual value function $Q_a$. This network is provided with the current observation $o_t^a$ and the last action $u_{t-1}^a$ of agent $a$ at each timestep.
+Resulting in the final form:
 
-The mixing network receives the agent network outputs and returns $Q$ by mixing the outputs monotonically. The monotonicity contraint is enforced via non-negative weights in the mixing layer.
+\begin{center}
+	$R_{i}^{combined}\left(s^{(i)}, a^{(i)}\right) = w * R_{i}\left(s^{(i)}, a^{(i)}\right) + (1-w) * R^{global}(s, a) $
+\end{center}
 
-The weights (of one layer??) in return are produced by hypernetworks which are supplied with the state. This networks consist of a single linear layer and a absolute function (non-negative weights). Biases are independently generated.
+The python code corresponding to the combined reward function (with non-uniform weights) can be found in the appendix in \autoref{sec:reward_combination_code}.
+\chapter{Evaluation}
+\section{Experiments}
 
-%
-%
-%
-\section{COMA - Counterfactual Multi-Agent Policy Gradients}
+%TODO:
+%- Compare VDN 3,8,25m with combined version c= 0,0.5,1(12 Experiments)
+%- Compare QMIX 3,8,25m with combined version c= 0,0.5,1(12 Experiments)
+%- Compare IQL 3,8,25m with combined version c= 0,0.5,1(12 Experiments)
 
-actor-critic policy-gradient method, decentralised policies, centralised critic to estimate Q-function and decentralised actors to optimise agents policies. counterfactual baseline marginalises single agents action while keeping other agents actions fixed.
-%
-%
-%
-\section{Central-V}
-%
-%
-%
-\section{ASN - Action Semantic Networks}
-%
-%
-%
-\section{MACKRL - Multi-Agent Common Knowledge Reinforcement Learning}
+VDN deployed in the 8m environment is already performing nearly perfectly although the learned policy differs noticebly from QMIX. Setting the combination weight to $c=0$ results in the best performance, indicating that a global reward signal is influencing a more effective policy and most prominent a faster learning. Agents trained with a combination weight of $c=1$ reach about a 80 percent win rate, but start learning when other algorithms already converge. Experiments conducted with $c=0.5$ show a fluctuating learning process, which nonetheless seems to converge to a similar performance. 
 
-"stochastic actor-critic algorithm that learns a hierarchical policy tree."
+%TODO: why fluctuating?
 
-higher tree levels = groups
-lower levels = subgroups (richer common knowledge)
-lowest level = independently learnt decentralised policies
-
-
-"centralised training of decentralised policies.
-During learning the agents can share observations, parameters, gradients, etc. without restriction but
-the result of learning is a set of decentralised policies such that each agent can select actions based
-only on its individual observations"
-
-\subsection{Common Knowledge Concept}
-Agents share common knowledge as soon as the see each other defined on their field of view.
-
-Without common knowledge, decentralised coordination of agents has to fall back on implicit communication. This includes observation of actions and their resulting effects in the environment and other agents.
-
-problems of implicit:
-"typically
-require multiple timesteps to execute, can limit the agility of control during execution (Tian et al.,
-2018)"
-
-\iffalse
-Das ist die Ebene {\tt subsubsection}.
-
-\subsubsection{Noch ein Unterunterabschnitt}
-\label{sec:b}
-
-Wer \ref{sec:a} sagt, mu"s auch \ref{sec:b} sagen.
-
-\subsection{Noch ein Unterabschnitt}
-
-Das ist ein gew"ohnlicher Absatz.
-
-\paragraph{Ein Absatz mit Titel}
-
-Das ist die Ebene {\tt paragraph}.
-
-\subparagraph{Ein Unterabsatz mit Titel}
-
-Das ist die Ebene {\tt subparagraph}.
-
-\subsection*{Ein nicht numerierter Unterabschnitt}
-
-Dieser Unterabscnitt erscheint nicht im Inhaltsverzeichnis.
-
-\section{Beispiele}
-Dieses Beispieldokument wurde mit dem \LaTeX-Paket {\tt dbstmpl.sty} erzeugt.
-{\tt dbstmpl.sty} definiert Befehle zum Erzeugen von einigen
-h"aufig gebrauchten Symbolen.
-
-\begin{align}
-  \N \subset \Z \subset \Q \subset \R \subset \C
-\end{align}
-
-Weitere Symbole k\"onnen im {\tt symbols-a4.pdf}-Dokument, das f\"ur
-gew\"ohnlich bei \LaTeX-Distributionen mitgeliefert wird, nachgeschlagen
-werden. Alternativ gibt es diverse Hilfeseiten im Netz.
-
-Au"serdem werden automatisch einige zus"atzliche Pakete geladen.
-Mit dem Paket {\tt graphicx} k"onnen Grafiken eingebunden werden.
-Abbildung~\ref{fig:dbslogo} zeigt das Logo der LFE f"ur Datenbanksysteme.
-
-\begin{figure}
-  \begin{center}
-    \includegraphics[width=2cm]{logo-dbs.png}
-  \end{center}
-  \caption{Altes Logo der LFE f"ur Datenbanksysteme.
-    \label{fig:dbslogo} % Figures und Tables können gelabelt werden.
-    % Es empfiehlt sich, dies in der Caption zu machen
-  }
+\begin{figure}[h!]
+	\centering
+	\begin{subfigure}[b]{0.49\textwidth}
+		\includegraphics[width=\textwidth]{img/results/vdnc_8m/battle_won_mean.png}
+		\caption{Battle won mean}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.49\textwidth}
+		\includegraphics[width=\textwidth]{img/results/vdnc_8m/return_mean.png}
+		\caption{Return mean}
+	\end{subfigure}
+	
+	\caption{VDN on 8 marines vanilla vs. combined rewards c=0.0,0.5,1.0.}
+	\label{fig:vdn_8m_results}
 \end{figure}
 
-{\tt amsmath} erlaubt die bequeme Alignierung von mehrzeiligen Formeln:
+As expected, environments with a larger group of agents profit from local rewards and gain even more from combined rewards. Vanilla VDN and combined reward VDN with $c=0$ are not able to win any rounds. Providing the agents with local rewards only ($c=1$) allows for at least some wins. 
+%TODO: why just max 4% wins
+%TODO: why fluctuating win rate
+%TODO: why so late?
+%TODO: why return c=0 != return vanilla
+\begin{figure}[h!]
+	  \centering
+	\begin{subfigure}[b]{0.49\textwidth}
+		\includegraphics[width=\textwidth]{img/results/vdnc_25m/battle_won_mean.png}
+		\caption{Battle won mean}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.49\textwidth}
+		\includegraphics[width=\textwidth]{img/results/vdnc_25m/return_mean.png}
+		\caption{Return mean}
+	\end{subfigure}
 
-\begin{align}
-  f(a,b) &= (a-b)^2 \label{eq:aMinusbSq}\\
-    &= a^2 - 2 a b + b^2 \label{eq:aMinusbSqResolved}
-\end{align}
-
-Zus\"atzlich k\"onnen diese Formeln auch referenziert werden. In~\eqref{eq:aMinusbSq}
-wird das Problem gestellt und in~\eqref{eq:aMinusbSqResolved} wird es etwas
-aufgel\"ost. Nat\"urlich k\"onnen die Gleichungen auch ohne Klammern
-referenziert werden: \ref{eq:aMinusbSq}, \ref{eq:aMinusbSqResolved}.
-
-Das in diesem Dokument geladene Paket {\tt subfigure} (oben eingebunden durch
-\verb=\usepackage{subfigure}=) erlaubt das Erzeugen von Unterabbildungen.
-Abbildung~\ref{fig:logos} enth"alt zwei Unterabbildungen.
-Abbildung~\ref{fig:logos-a} zeigt nochmal das Logo der LFE f"ur
-Datenbanksysteme, \ref{fig:logos-b} zeigt das Logo der
-Ludwig-Maximilians-Universit"at.
-
-\begin{figure}
-  \begin{center}
-    \subfigure[Altes DBS-Logo.\label{fig:logos-a}]{
-      \makebox[0.48\textwidth]{
-        \includegraphics[width=2cm]{logo-dbs.png}}}
-    \hspace{\fill}
-    \subfigure[Uraltes LMU-Logo.\label{fig:logos-b}]{
-      \makebox[0.48\textwidth]{
-        \includegraphics[width=5cm]{logo-lmu.png}}}
-  \end{center}
-  \caption{Zwei Logos.}
-  \label{fig:logos}
+	\caption{VDN on 25 marines vanilla vs. combined rewards c=0.0,0.5,1.0.}
+	\label{fig:vdn_25m_results}
 \end{figure}
 
-Tabelle~\ref{tab:quadratzahlen} zeigt die ersten f"unf Quadratzahlen.
 
-\begin{table}
-  \begin{center}
-  \begin{tabular}{|r|r|}
-    \hline \makebox[1cm]{$x$} & \makebox[1cm]{$x^2$}\\
-    \hline\hline 1 &  1\\
-    \hline 2 &  4\\
-    \hline 3 &  9\\
-    \hline 4 & 16\\
-    \hline 5 & 25\\
-    \hline
-  \end{tabular}
-  \end{center}
-  \caption{Die Zahlen 1 bis 5 und ihre Quadrate.}
-  \label{tab:quadratzahlen}
-\end{table}
+All models and experiment metrics can be found at \url{https://github.com/PMatthaei/pymarl-results}. Further experiment permutations than the ones included in this documentation can be evaluated via the \href{https://github.com/PMatthaei/pymarl-results/blob/master/visualize_pymarl.ipynb}{visualization script in Google Colaboratory}.
 
-Folgenderma\ss en wird Literatur referenziert.
-DBSCAN~\cite{EKSX96} und OPTICS~\cite{ABKS99} sind Beispiele f\"ur
-dichtebasierte Clusteringverfahren. Diese Eintr\"age werden als
-{\tt bibitem} im {\tt .bbl}-File referenziert. Um dieses File braucht man
-sich erfreulicherweise nicht zu k\"ummern, weil es automatisch aus einer
-Sammlung von BibTeX-Eintr\"agen in einem Literatur-File gebildet werden
-kann. Hier ist wichtig, dass dieses File den BibTeX-Konventionen
-\footnote{{\tt http://www.tex.ac.uk/tex-archive/biblio/bibtex/contrib/doc/btxdoc.pdf}}
-entspricht, sonst kommen kreative Fehlermeldungen. Daf\"ur braucht es
-besagte Literatur-Sammlung -- hier {\tt dbstmpl.bib}
-und einen Literatur-Stil, den man auch selber definieren kann, wie
-etwa {\tt dbstmpl.bst}.
 
-\section{Bemerkungen}
+\chapter{Conclusion}
+ Problem: Environment -> only homogeneous agents and symmetric groups. heterogeneous groups require more selfless behaviour f.e. tanking, exploding, being the bait.
+ 
+\chapter{Future work}
+The current implementation only used uniform unchangeable combine weights. Depending on the situation a agent might want to vary its combination to encourage a more selfish or more selfless behaviour.
 
-Eine "Ubersicht "uber alle Abbildungen und Tabellen einer Arbeit
-verschaffen das Abbildungs- und das Tabellenverzeichnis. Diese
-sollten entweder nach dem Inhaltsverzeichnis oder (wie in diesem
-Dokument) vor dem Literaturverzeichnis eingef"ugt werden.
-Je nach Bedarf und Umfang der Arbeit k"onnen auch Verzeichnisse
-f"ur Definitionen, S"atze oder Lemmata angelegt oder nicht
-ben"otigte Verzeichnisse weggelassen werden.
+Furthermore each agent should hold its own combination weight since their state may differ from other agents and requires a corresponding reward combination.
+
+The current local reward function does not support heterogeneous team compositions since it is assumed every unit inflicts the same damage per step. This renders our implementation useless for a majority of environments.
+
+Hyperparameter tuning not conducted.
 
 \appendix
+\chapter{Appendix}
+\newpage
+\section{SMAC - global reward function}
+\label{sec:reward_global_python_code}
+	\begin{python}
+def global_reward(self):
+	if self.reward_sparse:
+		return 0
+	
+	reward, delta_deaths, delta_ally, delta_enemy = 0
+	
+	neg_scale = self.reward_negative_scale
+	# update deaths
+	for al_id, al_unit in self.agents.items():
+		if not self.death_tracker_ally[al_id]:
+		# did not die so far
+		prev_health = (self.previous_ally_units[al_id].health			+ self.previous_ally_units[al_id].shield)
+	if al_unit.health == 0:
+		# just died
+		self.death_tracker_ally[al_id] = 1
+		if not self.reward_only_positive:
+			delta_deaths -= self.reward_death_value * neg_scale
+			delta_ally += prev_health * neg_scale
+		else:
+		# still alive
+			delta_ally += neg_scale * (prev_health - al_unit.health - al_unit.shield)
+	
+	for e_id, e_unit in self.enemies.items():
+		if not self.death_tracker_enemy[e_id]:
+			prev_health = (
+			self.previous_enemy_units[e_id].health
+			+ self.previous_enemy_units[e_id].shield
+			)
+		if e_unit.health == 0:
+			self.death_tracker_enemy[e_id] = 1
+			delta_deaths += self.reward_death_value
+			delta_enemy += prev_health
+		else:
+			delta_enemy += prev_health - e_unit.health - e_unit.shield
+	# shield regeneration
+	if self.reward_only_positive:
+		reward = abs(delta_enemy + delta_deaths)  
+	else:
+		reward = delta_enemy + delta_deaths - delta_ally
 
-\chapter{Ein Anhang}
+return reward
+	\end{python}
+\newpage
+\section{SMAC with combined rewards - local reward function} \label{sec:reward_local_python_code}
+	\begin{python}
+def local_reward(self, a_id, target_id):
 
-Im Anhang kann auf Implementierungsaspekte wie Datenbankschemata
-oder Programmcode eingegangen werden.
+	if self.reward_sparse:
+		return 0
 
-\section{\protect{pdflatex} vs.\ \protect{latex}}
-
-Dieses Dokument wird mit {\tt pdflatex} gebaut. Das ist n\"otig, wenn
-wie hier Bilder im {\tt .jpg}, {\tt .png} oder {\tt .pdf}-Format eingebunden
-werden. Alternativ kann auch alles \"uber das klassische \LaTeX-Kommando
-laufen: \verb=latex dbsba=. Damit wird ein {\tt .dvi} erstellt, welches
-erst mit {\tt dvipdf} zu {\tt .pdf} konvertiert werden muss. Dies
-bedeutet, dass Bilder nur noch als {\tt .eps} eingebunden werden
-k\"onnen. {\em Merke: {\tt .pdf}-affine und {\tt .eps}-Bilder k\"onnen
-NICHT kombiniert werden, also entweder oder.}
-
-\section{Ich will aber englisch!}
-
-Ihr d\"urft auch gerne englische \the\arbeit en schreiben. Daf\"ur m\"usst
-ihr im Stylefile {\tt dbstmpl.sty} die Zeile
-\verb=\RequirePackage[english,german]{babel}= durch
-\verb=\RequirePackage[german,english]{babel}= austauschen. Dann hei\ss en
-Chapter wieder Chapter und nicht Kapitel, etc.
-
-\section{Ich h\"atte da einen eigenen Stil.}
-
-Ihr k\"onnt auch eigene Stile definieren und verwenden, wenn er die
-Informationen des Deckblatts und die darauffolgende Erkl\"arung
-enth\"alt, sowie die Gnade des Betreuers gefunden hat (es
-empfiehlt sich also, fr\"uhzeitg kurz nachzufragen).
-
-\section{Hilfe?}
-
-Gibt es online zuhauf:
-
-\begin{description}
-  \item[Das \LaTeX Kochbuch]~\\{\tt http://www.uni-giessen.de/hrz/tex/cookbook/cookbook.html}
-  \item[CTAN] {\tt http://www.ctan.org/} zum manuellen Download von Stylefiles
-      und deren Dokumentation
-  \item[Diverse Mathe-Tweaks]~\\ \verb=http://meta.wikimedia.org/wiki/Help:Displaying_a_formula=
-  \item[B\"uchersuche mit BibTeX -Unterst\"utzung] {\tt http://lead.to/amazon/en/}
-  \item[JabRef] Java-basierter BibTeX -Manager {\tt http://jabref.sourceforge.net/}
-  \item[FAQs] {\tt http://www.tex.ac.uk/cgi-bin/texfaq2html}
-\end{description}
-
-Und zur Not versteht auch euer Betreuer vermutlich was davon.
-\fi
+	neg_scale = self.reward_negative_scale
+	delta_death, delta_self, delta_enemy = 0	
+	agent_unit = self.get_unit_by_id(a_id)	
+	# If the unit with id a_id is still alive
+	if not self.death_tracker_ally[a_id]:
+		# Fetch its previous health
+		prev_health = self.previous_ally_units[a_id].health + self.previous_ally_units[a_id].shield
+		# If it just died
+		if agent_unit.health == 0:
+		# Reward death negatively if configured
+		if not self.reward_only_positive:
+			delta_death -= self.reward_death_value * neg_scale
+		# Remember lost health (= damage from enemies) to reward negatively later
+			delta_self += prev_health * neg_scale
+	# If still alive
+	else:
+		current_health = agent_unit.health + agent_unit.shield
+		health_reward = prev_health - current_health
+		# Reward the delta health (shield regeneration, heal through MMM)
+		delta_self += neg_scale * health_reward
+	
+	# Search for the target (if it exists) which a_id attacked
+	if target_id is not None:
+		e_id, e_unit = next((e_id, _) for e_id, _ in self.enemies.items() if target_id == e_id)
+		if not self.death_tracker_enemy[e_id]:
+			# Reward dealt attack damage + kill
+			delta_enemy += self.local_attack_r_t
+	
+	if self.reward_only_positive:
+		reward = abs(delta_enemy + delta_death)
+	else:
+		reward = delta_enemy + delta_death - delta_self
+	
+	return reward
+	\end{python}
+\newpage
+\section{Generalized reward combination function} \label{sec:reward_combination_code}
+	\begin{python}
+def combine_local_rewards(self, rs):
+	ws = self.local_reward_weights
+	# Pair local rewards with their weight
+	rs_ws = list(zip(rs, ws))
+	# Calculate weighted global reward
+	r_global_combined = np.mean([(1.0 - w_j) * r_j for r_j, w_j in rs_ws])
+	# Calculate each agents recombined reward
+	rs_combined = [w_i * r_i + r_global_combined for r_i, w_i in rs_ws]
+	
+	return rs_combined
+	\end{python}

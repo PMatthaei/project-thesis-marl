@@ -1,0 +1,24 @@
+\BOOKMARK [0][-]{chapter.1}{Introduction}{}% 1
+\BOOKMARK [0][-]{chapter.2}{Presets}{}% 2
+\BOOKMARK [1][-]{section.2.1}{PyMARL - A multi-agent reinforcement learning framework}{chapter.2}% 3
+\BOOKMARK [2][-]{subsection.2.1.1}{Value Decompostion Networks}{section.2.1}% 4
+\BOOKMARK [2][-]{subsection.2.1.2}{QMIX - Monotonic Value Function Factorisation}{section.2.1}% 5
+\BOOKMARK [1][-]{section.2.2}{StarCraftII Multi Agent Challenge Environment}{chapter.2}% 6
+\BOOKMARK [2][-]{subsection.2.2.1}{Reward function}{section.2.2}% 7
+\BOOKMARK [1][-]{section.2.3}{Global and local reward functions}{chapter.2}% 8
+\BOOKMARK [2][-]{subsection.2.3.1}{Rewards in Multi-Agent Reinforcement Learning}{section.2.3}% 9
+\BOOKMARK [3][-]{subsubsection.2.3.1.1}{Credit Assignment Problem}{subsection.2.3.1}% 10
+\BOOKMARK [2][-]{subsection.2.3.2}{Challenges in reward shaping}{section.2.3}% 11
+\BOOKMARK [0][-]{chapter.3}{Dynamic reward composition}{}% 12
+\BOOKMARK [1][-]{section.3.1}{Idea}{chapter.3}% 13
+\BOOKMARK [1][-]{section.3.2}{Implementing a local reward function}{chapter.3}% 14
+\BOOKMARK [1][-]{section.3.3}{Combining local and global rewards}{chapter.3}% 15
+\BOOKMARK [0][-]{chapter.4}{Evaluation}{}% 16
+\BOOKMARK [1][-]{section.4.1}{Experiments}{chapter.4}% 17
+\BOOKMARK [0][-]{chapter.5}{Conclusion}{}% 18
+\BOOKMARK [0][-]{chapter.6}{Future work}{}% 19
+\BOOKMARK [0][-]{appendix.A}{Appendix}{}% 20
+\BOOKMARK [1][-]{section.A.1}{SMAC - global reward function}{appendix.A}% 21
+\BOOKMARK [1][-]{section.A.2}{SMAC with combined rewards - local reward function}{appendix.A}% 22
+\BOOKMARK [1][-]{section.A.3}{Generalized reward combination function}{appendix.A}% 23
+\BOOKMARK [0][-]{appendix*.4}{Bibliography}{}% 24
