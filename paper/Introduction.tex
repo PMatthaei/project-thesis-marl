@@ -63,6 +63,9 @@ The global reward function $R^{global}(s, a)=\dfrac{1}{n} \sum_{i=1}^{n} R_i\lef
 
 On the other side, a local reward function $R_{i}^{local}\left(s^{(i)}, a^{(i)}\right)$ should reward an action taken by a single agent \textit{i} within a group. Accumulating all local rewards of agents in the same group should result in the global reward calculated for this group. \cite{NIPS2005_2951}
 
+%TODO did they do this on purpose? read SMAC again!
+It should be noted that the default PyMARL reward function is not dividing it`s global reward by the amount of agents contributing to it. A corrected global reward function is used in the following experiments.
+
 \subsection{Rewards in Multi-Agent Reinforcement Learning}
 \cite{NIPS2005_2951} Shows that most algorithms "will need to see $\tilde{\Omega}(n)$ trajectories in the worst case to achieve good performance". An important definition arising from this paper is the neighborhood of an agent i, which describes the subset of agents that are directly influenced by agent i`s state.
 
@@ -106,27 +109,31 @@ $A = (a_{1},a_{2},...,a_{i}), i = n$ and is assigned his own reward combination 
 
 % TODO: is it really s_i? not the whole state of all agents since we are using them to calculate absolute damage etc
 
-\begin{center}
-	$R_{i}^{combined}\left(s^{(i)}, a^{(i)}\right) = w_{i} * R_{i}\left(s^{(i)}, a^{(i)}\right) + \dfrac{1}{n} * \sum_{j=1}^{n} (1-w_{j}) * R_{i}\left(s^{(i)}, a^{(i)}\right) $
-\end{center}
+\begin{equation}\label{eq:reward_combined_1}
+	R_{i}^{combined}\left(s^{(i)}, a^{(i)}\right) = w_{i} * R_{i}\left(s^{(i)}, a^{(i)}\right) + \dfrac{1}{n} * \sum_{j=1}^{n} (1-w_{j}) * R_{j}\left(s^{(j)}, a^{(j)}\right)
+\end{equation}
 
 ¸where $w_{i}$ is the combination weight for the currently observed agent and $w_{j}$ are weights from group members of agent \textit{i}. The recombined global reward is therefore:
 
-\begin{center}
-	$R_{global}^{combined} = \dfrac{1}{n} * \sum_{j=1}^{n} (1-w_{j}) * R_{i}\left(s^{(i)}, a^{(i)}\right) $
-\end{center}
+\begin{equation}\label{eq:reward_combined_2}
+	R_{global}^{combined} = \dfrac{1}{n} * \sum_{j=1}^{n} (1-w_{j}) * R_{j}\left(s^{(j)}, a^{(j)}\right)
+\end{equation}
 
 The following experiments have been conducted with a uniform weight for all agents resulting in $w_{1}=w_{2}=...=w_{i}=w$. Therefore $R_{global}^{combined}$ can be rewritten to
 
-\begin{center}
-	$R_{global}^{combined} = \dfrac{1}{n} * \sum_{j=1}^{n} (1-\mathbf{w}) * R_{i}\left(s^{(i)}, a^{(i)}\right) = (1-w) * \dfrac{1}{n} * \sum_{j=1}^{n}  * R_{i}\left(s^{(i)}, a^{(i)}\right) = (1-w) * R^{global}(s, a)$
-\end{center}
+\begin{align}\label{eq:reward_combined_3}
+	R_{global}^{combined} & = \dfrac{1}{n} * \sum_{j=1}^{n} (1-\mathbf{w}) * R_{j}\left(s^{(j)}, a^{(j)}\right) \notag \\ 
+	& = (1-w) * \dfrac{1}{n} * \sum_{j=1}^{n}  * R_{j}\left(s^{(j)}, a^{(j)}\right) \notag \\
+	& = (1-w) * R^{global}(s, a)
+\end{align}
 
 Resulting in the final form:
 
-\begin{center}
-	$R_{i}^{combined}\left(s^{(i)}, a^{(i)}\right) = w * R_{i}\left(s^{(i)}, a^{(i)}\right) + (1-w) * R^{global}(s, a) $
-\end{center}
+\begin{equation}\label{eq:reward_combined_4}
+	R_{i}^{combined}\left(s^{(i)}, a^{(i)}\right) = w * R_{i}\left(s^{(i)}, a^{(i)}\right) + (1-w) * R^{global}(s, a)
+\end{equation}
+
+\autoref{eq:reward_combined_1} is offering non-uniform combination weights in order to contribute to learning of different policies per agent. This could be helpful in heterogeneous agent compositions.
 
 The python code corresponding to the combined reward function (with non-uniform weights) can be found in the appendix in \autoref{sec:reward_combination_code}.
 \chapter{Evaluation}
