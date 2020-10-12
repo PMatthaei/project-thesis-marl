@@ -3,44 +3,47 @@ Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: dbstmpl.aux
 The style file: plain.bst
 Database file #1: dbstmpl.bib
-You've used 4 entries,
+Warning--I didn't find a database entry for "foerster2018counterfactual"
+Warning--empty journal in watkins1989learning
+You've used 11 entries,
             2118 wiz_defined-function locations,
-            520 strings with 4857 characters,
-and the built_in function-call counts, 1611 in all, are:
-= -- 139
-> -- 118
-< -- 1
-+ -- 45
-- -- 41
-* -- 117
-:= -- 285
-add.period$ -- 13
-call.type$ -- 4
-change.case$ -- 30
+            559 strings with 6353 characters,
+and the built_in function-call counts, 4194 in all, are:
+= -- 376
+> -- 302
+< -- 2
++ -- 119
+- -- 107
+* -- 313
+:= -- 748
+add.period$ -- 34
+call.type$ -- 11
+change.case$ -- 84
 chr.to.int$ -- 0
-cite$ -- 4
-duplicate$ -- 58
-empty$ -- 107
-format.name$ -- 41
-if$ -- 327
+cite$ -- 12
+duplicate$ -- 139
+empty$ -- 255
+format.name$ -- 107
+if$ -- 834
 int.to.chr$ -- 0
-int.to.str$ -- 4
-missing$ -- 5
-newline$ -- 23
-num.names$ -- 10
-pop$ -- 40
+int.to.str$ -- 11
+missing$ -- 11
+newline$ -- 58
+num.names$ -- 24
+pop$ -- 89
 preamble$ -- 1
-purify$ -- 27
+purify$ -- 73
 quote$ -- 0
-skip$ -- 38
+skip$ -- 102
 stack$ -- 0
-substring$ -- 44
-swap$ -- 12
-text.length$ -- 1
+substring$ -- 147
+swap$ -- 28
+text.length$ -- 2
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 14
-warning$ -- 0
-while$ -- 12
-width$ -- 5
-write$ -- 45
+type$ -- 42
+warning$ -- 1
+while$ -- 31
+width$ -- 13
+write$ -- 118
+(There were 2 warnings)

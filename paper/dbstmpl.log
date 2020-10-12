@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2020.7.10)  16 AUG 2020 10:45
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2020.7.10)  13 SEP 2020 11:19
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -507,7 +507,7 @@ LaTeX Info: Redefining \nameref on input line 26.
 \@outlinefile=\write3
 \openout3 = `dbstmpl.out'.
 
-<header.png, id=100, 1397.22pt x 184.43906pt>
+<header.png, id=140, 1397.22pt x 184.43906pt>
 File: header.png Graphic file (type png)
 <use header.png>
 Package pdftex.def Info: header.png  used on input line 46.
@@ -540,138 +540,163 @@ l.50 \erklaerung
 <to be read again> 
                    \relax 
 l.55 \end{abstract}
-                    [1] (./dbstmpl.toc)
+                    [1] (./dbstmpl.tocpdfTeX warning (ext4): destination with t
+he same identifier (name{page.1}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.29 ...{\numberline {6}Conclusion}{17}{chapter.6}
+                                                  % [1
+
+])
 \tf@toc=\write4
 \openout4 = `dbstmpl.toc'.
 
- (./Introduction.texpdfTeX warning (ext4): destination with the same identifier
- (name{page.1}) has been already used, duplicate ignored
-<to be read again> 
-                   \relax 
-l.1 \chapter
-            {Introduction} [1
-
-]
+ (./Introduction.tex
+[2]
 Chapter 1.
-[2
+[3
 
 ]
 Chapter 2.
+[4
 
-Overfull \hbox (13.34938pt too wide) in paragraph at lines 11--12
+]
+Chapter 3.
+
+Overfull \hbox (13.34938pt too wide) in paragraph at lines 14--15
 \OT1/cmr/m/n/12 wards, the Readme in the fol-low-ing repos-i-tory []$\OT1/cmtt/
 m/n/12 https : / / github . com / PMatthaei /
  []
 
-[3
 
-]
-Overfull \hbox (6.07095pt too wide) in paragraph at lines 55--58
+Overfull \hbox (17.62482pt too wide) in paragraph at lines 25--43
+[][] 
+ []
+
+[5
+
+] [6] [7]
+Overfull \hbox (3.21748pt too wide) in paragraph at lines 225--225
+[]\OT1/cmr/bx/n/14.4 COMA - Coun-ter-fac-tual Multi-Agent Pol-icy Gra-
+ []
+
+[8] [9]
+Overfull \hbox (6.07095pt too wide) in paragraph at lines 263--266
 [][]\OT1/cmtt/m/n/12 reward_death_value []\OT1/cmr/m/n/12 per ally unit killed 
 are scaled by [][]\OT1/cmtt/m/n/12 reward_negative_scale
  []
 
-[4] [5]
-Chapter 3.
-[6
+[10]
 
-] [7] [8]
+LaTeX Warning: Citation `foerster2018counterfactual' on page 11 undefined on in
+put line 289.
+
+[11]
 Chapter 4.
-<img/results/vdnc_8m/battle_won_mean.png, id=205, 433.62pt x 289.08pt>
+[12
+
+] [13] [14]
+Chapter 5.
+<img/results/vdnc_8m/battle_won_mean.png, id=307, 433.62pt x 289.08pt>
 File: img/results/vdnc_8m/battle_won_mean.png Graphic file (type png)
 <use img/results/vdnc_8m/battle_won_mean.png>
 Package pdftex.def Info: img/results/vdnc_8m/battle_won_mean.png  used on input
- line 154.
+ line 365.
 (pdftex.def)             Requested size: 195.18808pt x 130.12448pt.
-<img/results/vdnc_8m/return_mean.png, id=207, 433.62pt x 289.08pt>
+<img/results/vdnc_8m/return_mean.png, id=309, 433.62pt x 289.08pt>
 File: img/results/vdnc_8m/return_mean.png Graphic file (type png)
 <use img/results/vdnc_8m/return_mean.png>
 Package pdftex.def Info: img/results/vdnc_8m/return_mean.png  used on input lin
-e 159.
+e 370.
 (pdftex.def)             Requested size: 195.18808pt x 130.12448pt.
-<img/results/vdnc_25m/battle_won_mean.png, id=208, 433.62pt x 289.08pt>
+<img/results/vdnc_25m/battle_won_mean.png, id=310, 433.62pt x 289.08pt>
 File: img/results/vdnc_25m/battle_won_mean.png Graphic file (type png)
 <use img/results/vdnc_25m/battle_won_mean.png>
 Package pdftex.def Info: img/results/vdnc_25m/battle_won_mean.png  used on inpu
-t line 175.
+t line 386.
 (pdftex.def)             Requested size: 195.18808pt x 130.12448pt.
-<img/results/vdnc_25m/return_mean.png, id=209, 433.62pt x 289.08pt>
+<img/results/vdnc_25m/return_mean.png, id=311, 433.62pt x 289.08pt>
 File: img/results/vdnc_25m/return_mean.png Graphic file (type png)
 <use img/results/vdnc_25m/return_mean.png>
 Package pdftex.def Info: img/results/vdnc_25m/return_mean.png  used on input li
-ne 180.
+ne 391.
 (pdftex.def)             Requested size: 195.18808pt x 130.12448pt.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[9
+[15
 
  <./img/results/vdnc_8m/battle_won_mean.png> <./img/results/vdnc_8m/return_mean
-.png>] [10 <./img/results/vdnc_25m/battle_won_mean.png> <./img/results/vdnc_25m
+.png>] [16 <./img/results/vdnc_25m/battle_won_mean.png> <./img/results/vdnc_25m
 /return_mean.png>]
-Chapter 5.
-[11
+Chapter 6.
+[17
 
 ]
-Chapter 6.
-[12
+Chapter 7.
+[18
 
 ]
 Appendix A.
-[13
+[19
 
 ] (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2019/09/10 1.8c listings language file
 )
 LaTeX Font Info:    Font shape `OT1/cmtt/bx/n' in size <10> not available
-(Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 210.
- [14]
-[15]) (./dbstmpl.bbl [16]
-Underfull \hbox (badness 1052) in paragraph at lines 11--16
-[]\OT1/cmr/m/n/12 Jakob N Fo-er-ster, Gre-gory Far-quhar, Tri-antafyl-los Afour
-as, Nan-tas
- []
+(Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 421.
+ [20]
+[21]) (./dbstmpl.bbl [22] [23
 
-)
+])
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 77.
- [17
-
-]
+ [24]
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 77.
  (./dbstmpl.aux)
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 77.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 77.
 Package rerunfilecheck Info: File `dbstmpl.out' has not changed.
-(rerunfilecheck)             Checksum: 65AEA4D7AA2EE3FA94952C3185CB12A4;1706.
+(rerunfilecheck)             Checksum: 6C169D2611F1898C2224D6A1E52E13E1;2493.
+
+
+LaTeX Warning: There were undefined references.
+
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 77.
  ) 
 Here is how much of TeX's memory you used:
- 11608 strings out of 481239
- 169025 string characters out of 5920377
- 789549 words of memory out of 5000000
- 26525 multiletter control sequences out of 15000+600000
- 541571 words of font info for 58 fonts, out of 8000000 for 9000
+ 11665 strings out of 481239
+ 169837 string characters out of 5920377
+ 789907 words of memory out of 5000000
+ 26550 multiletter control sequences out of 15000+600000
+ 544113 words of font info for 66 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 56i,12n,50p,807b,1633s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 56i,25n,50p,1014b,1633s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-ts1.enc}</usr/share/texli
 ve/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/tex
-mf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dis
-t/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texlive/texmf-dist/font
-s/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1
-/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public
-/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfon
-ts/cm/cmr17.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/c
-mr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsl10.pf
-b></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsltt10.pfb></
-usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/sh
-are/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/share/te
-xlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/share/texlive/
-texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb></usr/share/texmf/fonts/ty
-pe1/public/cm-super/sfrm1200.pfb>
-Output written on dbstmpl.pdf (20 pages, 411382 bytes).
+mf-dist/fonts/type1/public/amsfonts/cm/cmbx8.pfb></usr/share/texlive/texmf-dist
+/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts
+/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texlive/texmf-dist/fonts/type1
+/public/amsfonts/cm/cmmi6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public
+/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfon
+ts/cm/cmmib10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm
+extra/cmmib8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/
+cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.p
+fb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></us
+r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/share/
+texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/
+texmf-dist/fonts/type1/public/amsfonts/cm/cmsl10.pfb></usr/share/texlive/texmf-
+dist/fonts/type1/public/amsfonts/cm/cmsltt10.pfb></usr/share/texlive/texmf-dist
+/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts
+/type1/public/amsfonts/cm/cmsy6.pfb></usr/share/texlive/texmf-dist/fonts/type1/
+public/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/
+amsfonts/cm/cmti12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfon
+ts/cm/cmtt10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/
+cmtt12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/m
+sbm10.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm1200.pfb>
+Output written on dbstmpl.pdf (27 pages, 497264 bytes).
 PDF statistics:
- 441 PDF objects out of 1000 (max. 8388607)
- 391 compressed objects within 4 object streams
- 149 named destinations out of 1000 (max. 500000)
- 218 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 576 PDF objects out of 1000 (max. 8388607)
+ 509 compressed objects within 6 object streams
+ 173 named destinations out of 1000 (max. 500000)
+ 298 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -1,4 +1,4 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
 
 \bibitem{NIPS2005_2951}
 Drew Bagnell and Andrew~Y. Ng.
@@ -7,12 +7,30 @@ Drew Bagnell and Andrew~Y. Ng.
   Advances in Neural Information Processing Systems 18}, pages 91--98. MIT
   Press, 2006.
 
-\bibitem{foerster2018counterfactual}
-Jakob~N Foerster, Gregory Farquhar, Triantafyllos Afouras, Nantas Nardelli, and
+\bibitem{claus1998dynamics}
+Caroline Claus and Craig Boutilier.
+\newblock The dynamics of reinforcement learning in cooperative multiagent
+  systems.
+\newblock {\em AAAI/IAAI}, 1998(746-752):2, 1998.
+
+\bibitem{foerster2017counterfactual}
+Jakob Foerster, Gregory Farquhar, Triantafyllos Afouras, Nantas Nardelli, and
   Shimon Whiteson.
 \newblock Counterfactual multi-agent policy gradients.
-\newblock In {\em Thirty-second AAAI conference on artificial intelligence},
-  2018.
+\newblock {\em arXiv preprint arXiv:1705.08926}, 2017.
+
+\bibitem{lin1993reinforcement}
+Long-Ji Lin.
+\newblock Reinforcement learning for robots using neural networks.
+\newblock Technical report, Carnegie-Mellon Univ Pittsburgh PA School of
+  Computer Science, 1993.
+
+\bibitem{rashid2018qmix}
+Tabish Rashid, Mikayel Samvelyan, Christian~Schroeder De~Witt, Gregory
+  Farquhar, Jakob Foerster, and Shimon Whiteson.
+\newblock Qmix: Monotonic value function factorisation for deep multi-agent
+  reinforcement learning.
+\newblock {\em arXiv preprint arXiv:1803.11485}, 2018.
 
 \bibitem{samvelyan19smac}
 Mikayel Samvelyan, Tabish Rashid, Christian~Schroeder de~Witt, Gregory
@@ -21,9 +39,34 @@ Mikayel Samvelyan, Tabish Rashid, Christian~Schroeder de~Witt, Gregory
 \newblock {The} {StarCraft} {Multi}-{Agent} {Challenge}.
 \newblock {\em CoRR}, abs/1902.04043, 2019.
 
+\bibitem{sunehag2017value}
+Peter Sunehag, Guy Lever, Audrunas Gruslys, Wojciech~Marian Czarnecki, Vinicius
+  Zambaldi, Max Jaderberg, Marc Lanctot, Nicolas Sonnerat, Joel~Z Leibo, Karl
+  Tuyls, et~al.
+\newblock Value-decomposition networks for cooperative multi-agent learning.
+\newblock {\em arXiv preprint arXiv:1706.05296}, 2017.
+
 \bibitem{sutton2018reinforcement}
 Richard~S Sutton and Andrew~G Barto.
 \newblock {\em Reinforcement learning: An introduction}.
 \newblock MIT press, 2018.
+
+\bibitem{tampuu2017multiagent}
+Ardi Tampuu, Tambet Matiisen, Dorian Kodelja, Ilya Kuzovkin, Kristjan Korjus,
+  Juhan Aru, Jaan Aru, and Raul Vicente.
+\newblock Multiagent cooperation and competition with deep reinforcement
+  learning.
+\newblock {\em PloS one}, 12(4):e0172395, 2017.
+
+\bibitem{watkins1989learning}
+Christopher John Cornish~Hellaby Watkins.
+\newblock Learning from delayed rewards.
+\newblock 1989.
+
+\bibitem{wen2020smix}
+Chao Wen, Xinghu Yao, Yuhui Wang, and Xiaoyang Tan.
+\newblock Smix ($\lambda$): Enhancing centralized value functions for
+  cooperative multi-agent reinforcement learning.
+\newblock In {\em AAAI}, pages 7301--7308, 2020.
 
 \end{thebibliography}

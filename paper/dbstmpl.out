@@ -1,24 +1,34 @@
 \BOOKMARK [0][-]{chapter.1}{Introduction}{}% 1
-\BOOKMARK [0][-]{chapter.2}{Presets}{}% 2
-\BOOKMARK [1][-]{section.2.1}{PyMARL - A multi-agent reinforcement learning framework}{chapter.2}% 3
-\BOOKMARK [2][-]{subsection.2.1.1}{Value Decompostion Networks}{section.2.1}% 4
-\BOOKMARK [2][-]{subsection.2.1.2}{QMIX - Monotonic Value Function Factorisation}{section.2.1}% 5
-\BOOKMARK [1][-]{section.2.2}{StarCraftII Multi Agent Challenge Environment}{chapter.2}% 6
-\BOOKMARK [2][-]{subsection.2.2.1}{Reward function}{section.2.2}% 7
-\BOOKMARK [1][-]{section.2.3}{Global and local reward functions}{chapter.2}% 8
-\BOOKMARK [2][-]{subsection.2.3.1}{Rewards in Multi-Agent Reinforcement Learning}{section.2.3}% 9
-\BOOKMARK [3][-]{subsubsection.2.3.1.1}{Credit Assignment Problem}{subsection.2.3.1}% 10
-\BOOKMARK [2][-]{subsection.2.3.2}{Challenges in reward shaping}{section.2.3}% 11
-\BOOKMARK [0][-]{chapter.3}{Dynamic reward composition}{}% 12
-\BOOKMARK [1][-]{section.3.1}{Idea}{chapter.3}% 13
-\BOOKMARK [1][-]{section.3.2}{Implementing a local reward function}{chapter.3}% 14
-\BOOKMARK [1][-]{section.3.3}{Combining local and global rewards}{chapter.3}% 15
-\BOOKMARK [0][-]{chapter.4}{Evaluation}{}% 16
-\BOOKMARK [1][-]{section.4.1}{Experiments}{chapter.4}% 17
-\BOOKMARK [0][-]{chapter.5}{Conclusion}{}% 18
-\BOOKMARK [0][-]{chapter.6}{Future work}{}% 19
-\BOOKMARK [0][-]{appendix.A}{Appendix}{}% 20
-\BOOKMARK [1][-]{section.A.1}{SMAC - global reward function}{appendix.A}% 21
-\BOOKMARK [1][-]{section.A.2}{SMAC with combined rewards - local reward function}{appendix.A}% 22
-\BOOKMARK [1][-]{section.A.3}{Generalized reward combination function}{appendix.A}% 23
-\BOOKMARK [0][-]{appendix*.4}{Bibliography}{}% 24
+\BOOKMARK [0][-]{chapter.2}{Motivation}{}% 2
+\BOOKMARK [0][-]{chapter.3}{Presets}{}% 3
+\BOOKMARK [1][-]{section.3.1}{PyMARL - A multi-agent reinforcement learning framework}{chapter.3}% 4
+\BOOKMARK [1][-]{section.3.2}{Related work}{chapter.3}% 5
+\BOOKMARK [2][-]{subsection.3.2.1}{Q-Learning in single agent environments}{section.3.2}% 6
+\BOOKMARK [2][-]{subsection.3.2.2}{DQN - Deep Q-Networks}{section.3.2}% 7
+\BOOKMARK [2][-]{subsection.3.2.3}{IQL - Independent Q-Learning}{section.3.2}% 8
+\BOOKMARK [2][-]{subsection.3.2.4}{JQL - Joint Q-Learning}{section.3.2}% 9
+\BOOKMARK [2][-]{subsection.3.2.5}{VDN - Value Decomposition Networks}{section.3.2}% 10
+\BOOKMARK [2][-]{subsection.3.2.6}{QMIX - Monotonic Value Function Factorization}{section.3.2}% 11
+\BOOKMARK [2][-]{subsection.3.2.7}{SMIX - Enhanced Centralized Value Functions}{section.3.2}% 12
+\BOOKMARK [2][-]{subsection.3.2.8}{QTRAN - }{section.3.2}% 13
+\BOOKMARK [2][-]{subsection.3.2.9}{CKL - Common Knowledge Learning}{section.3.2}% 14
+\BOOKMARK [2][-]{subsection.3.2.10}{COMA - Counterfactual Multi-Agent Policy Gradients}{section.3.2}% 15
+\BOOKMARK [1][-]{section.3.3}{StarCraftII Multi Agent Challenge Environment}{chapter.3}% 16
+\BOOKMARK [2][-]{subsection.3.3.1}{Reward function}{section.3.3}% 17
+\BOOKMARK [1][-]{section.3.4}{Global and local reward functions}{chapter.3}% 18
+\BOOKMARK [2][-]{subsection.3.4.1}{Rewards in Multi-Agent Reinforcement Learning}{section.3.4}% 19
+\BOOKMARK [3][-]{subsubsection.3.4.1.1}{Credit Assignment Problem}{subsection.3.4.1}% 20
+\BOOKMARK [2][-]{subsection.3.4.2}{Challenges in reward shaping}{section.3.4}% 21
+\BOOKMARK [0][-]{chapter.4}{Dynamic reward composition}{}% 22
+\BOOKMARK [1][-]{section.4.1}{Idea}{chapter.4}% 23
+\BOOKMARK [1][-]{section.4.2}{Implementing a local reward function}{chapter.4}% 24
+\BOOKMARK [1][-]{section.4.3}{Combining local and global rewards}{chapter.4}% 25
+\BOOKMARK [0][-]{chapter.5}{Evaluation}{}% 26
+\BOOKMARK [1][-]{section.5.1}{Experiments}{chapter.5}% 27
+\BOOKMARK [0][-]{chapter.6}{Conclusion}{}% 28
+\BOOKMARK [0][-]{chapter.7}{Future work}{}% 29
+\BOOKMARK [0][-]{appendix.A}{Appendix}{}% 30
+\BOOKMARK [1][-]{section.A.1}{SMAC - global reward function}{appendix.A}% 31
+\BOOKMARK [1][-]{section.A.2}{SMAC with combined rewards - local reward function}{appendix.A}% 32
+\BOOKMARK [1][-]{section.A.3}{Generalized reward combination function}{appendix.A}% 33
+\BOOKMARK [0][-]{appendix*.4}{Bibliography}{}% 34

@@ -1,8 +1,11 @@
 \chapter{Introduction}
 
-TODO:
+%TODO: What is Multi-Agent Reinforcement Learning (MARL)
 
-- What is Multi-Agent Reinforcement Learning (MARL)
+\chapter{Motivation}
+
+Most reviewed papers concerning MARL algorithms do not provide detailed experiments with huge groups of agents. This raises the question how agent policies behave in terms of metrics and visible wrong behavior when watching these agents play. Since the joint action as well as the communicated state increase with the number of agents, it is interesting how already developed algorithms perform. PyMARL is a collection of algorithms running on the SMAC environment which allows for multi-agent micro-management learning in StarCraftII. This is a novelty since most algorithms perform on different environments and are therefore not suitable for comparison. PyMARl combines already five algorithms (IQL,VDN,QMIX,COMA,QTRAN) while others have forked PyMARL or SMAC to run experiments (CKL, SMIX). Use of local and global rewards is not always consistent (f.e. some papers seem to use local rewards with algorithm A while others f.e. PyMARL implement algorithm A with global reward)
+
 
 \chapter{Presets}
 
@@ -10,16 +13,221 @@ TODO:
 
 In order to setup PyMARL(fork) with extensions on local and combined rewards, the Readme in the following repository \url{https://github.com/PMatthaei/pymarl} contains a step by step guide. The main repository of PyMARL can be found at \url{https://github.com/oxwhirl/pymarl}. \cite{samvelyan19smac}
 
-TODO:
+\section{Related work}
 
-- Why these two algorithms only?
+%TODO:What are algorithms doing? What are problems?
 
-- What are they doing?
+\subsection{Q-Learning in single agent environments}
+%TODO: What is Q-Learning trying to achieve? What are problems? $\rightarrow$ MARL affected?
 
-- What are problems?
+Q-Learning is an algorithm to find a suitable policy to maximize an agent`s accumulated long term reward without explicit information about dynamics of the environment including the reward scheme. Q-learning estimates the value of an action in a particular state of the environment.\cite{watkins1989learning}
 
-\subsection{Value Decompostion Networks}
-\subsection{QMIX - Monotonic Value Function Factorisation}
+\makebox[\textwidth]{
+	$Q_{\text {new}}\left(s_{t}, a_{t}\right) 
+	\leftarrow 
+	\underbrace{Q\left(s_{t}, a_{t}\right)}_{\text {old value}}
+	+
+	\underbrace{\alpha}_{\text {learning rate}}
+	\cdot
+	\overbrace{
+		(\underbrace{
+			\underbrace{r_{t}}_{\text {reward}}
+			+
+			\underbrace{\gamma}_{\text {discount factor}}
+			\cdot
+			\underbrace{\max _{a} Q\left(s_{t+1}, a\right)}_{\text{estimate of optimal future value}}
+		}_{\text {new value (temporal difference target)}} -
+		\underbrace{Q\left(s_{t}, a_{t}\right)}_{\text {old value}})
+	}^{\text{temporal difference}}$
+}
+
+
+\subsection{DQN - Deep Q-Networks}
+%TODO: Summarize DQNs
+\cite{lin1993reinforcement}
+
+\subsection{IQL - Independent Q-Learning}
+
+% Description of paper, basic ideas, main formulas
+Each agent deploys an independent Q-learning algorithm to learn an individual action-value function solely based on their own actions.
+
+Recently DQN have been used to estimate the value-function especially in environments with large input \cite{tampuu2017multiagent}. In a multi-agent setup, the taken action is determined by the corresponding DQN for all agents separately, therefore the environment is the only interface for interaction between agents. This results in an easy to setup architecture which is decentralized, stable across tasks and computational efficient. The setup by \cite{tampuu2017multiagent} uses local rewards and the game state (screen capture of the game itself) is fully observable shared between the agents.
+This results in the update rule for a single agent \textit{i}:
+
+% Formulas
+\begin{center}
+
+$Q^{\text {i}}_{new}\left(s^{i}_{t}, a^{i}_{t}\right) 
+\leftarrow 
+Q^{i}\left(s^{i}_{t}, a^{i}_{t}\right)
++
+\alpha
+\cdot
+(r^{i}_{t}+\gamma\cdot\max _{a} Q\left(s_{t+1}, a\right)
+-
+Q^{i}\left(s^{i}_{t}, a^{i}_{t}\right)
+$
+	
+\end{center}
+
+% Discussion
+Although this implementation is straight forward and simple, simultaneous learning and exploring agents create a non-stationarity in the environment. This can lead to non-convergence of policies and inaccurate representation of interactions between agents \cite{rashid2018qmix}.
+
+% Implementation in PyMARL
+%TODO: describe how similar, what is different?
+The implementation of IQL in PyMARL is similar to the previous setup. The state for this setup is a (partial) copy of the game`s state as opposed to image data as in above setup.
+
+%TODO: Summarize Tan 1993
+%
+% IQL Tan 1993
+%
+%- Comparsion of three methods: 
+%
+%	- sharing state,actions,rewards triplets, state space increases exponentially in term of number of agents
+%	
+%	- sharing episodes (sequence of triplets), not always possible for heterogeneous agents
+%	
+%	-sharing policies
+%Assuming a independent task (deer hunt):
+%- sensation from other agents is beneficial if used efficiently f.e.use hunter sensation first, if he cannot see prey, use scouts sensation, decreasing sensation range hindered training, short sighted scouts lose track before coop agent can follow, leading him to nowhere
+%
+%- sharing episodes and policies speeds up learning at cost of communication,
+%
+% using same policy -> quicker convergence than independent(policies differ because different exploration of state space aka results/progress), exchange averages policies at a certain frequency
+% 
+% share episodes -> solution episodes (where prey is captured) are communicated and replayed to update policy
+% 
+%- joint tasks, coop agents learn slower but outperform independent agents
+%
+%- intelligent agents learn when to cooperate and which method of the above
+%
+%Assuming a joint task (deer hunt where both hunters need to catch to win):
+%- problems if two deer -> hunters split when chasing and cannot win
+%-> add additional sensation ( relative pos to prey and to other hunter)
+
+
+\subsection{JQL - Joint Q-Learning}
+%TODO: 29 - The Dynamics of Reinforcement Learning in Cooperative Multiagent Systems
+JQL or joint action learning (JAL) only differs from IQL in terms of the provided action. While IQL used just the action of the currently training agent $a_{i}$, JQL learns Q-values based on the joint action \textbf{a} over all agents in the environment or group. In order to deal with the non-stationarity of the environment, the relative value of an individual action can maintain beliefs about policies of other agents.
+% Formulas
+
+\begin{center}
+	
+	$Q^{\text {i}}_{new}\left(s^{i}_{t}, \mathbf{a}_{t}\right) 
+	\leftarrow 
+	Q^{i}\left(s^{i}_{t}, \mathbf{a}_{t}\right)
+	+
+	\alpha
+	\cdot
+	(r^{i}_{t}+\gamma\cdot\max _{a} Q\left(s_{t+1}, a\right)
+	-
+	Q^{i}\left(s^{i}_{t}, \mathbf{a}_{t}\right)
+	$
+	
+\end{center}
+
+The estimated value of the individual action $a_{i}$ performed by agent \textit{i} can be retrieved via:
+
+\begin{center}
+	$E V\left(a^{i}\right)=\sum_{a^{-i} \in A_{-i}} Q\left(a^{-i} \cup\left\{a^{i}\right\}\right) \prod_{j \neq i}\left\{\operatorname{Pr}_{a^{-i}[j]}^{i}\right\}$
+\end{center}
+\cite{claus1998dynamics}
+
+\subsection{VDN - Value Decomposition Networks}
+The main idea behind VDN arises from the assumption that joint-action-value functions can be decomposed into $ \mathit{d} $ single-agent value functions which are then composed via summation into the join-action-value function.
+%TODO: introduce history somewhere
+\begin{center}
+	$ Q((h^1, h^2, ..., h^d),(a^1, a^2, ..., a^d)) \approx \sum_{i=1}^{d} Q^i(h^i, a^i) $
+\end{center}
+
+Thus each agents value-function $ \tilde{Q}_i $ depends solely on it`s local observation. The history of agent $\mathit{i}$ is denoted as $h^i$ while $a^i$ corresponds to the agent`s current action. The history $h_t = a_1o_1r_1,...,a_{t-1}o_{t-1},r_{t-1}$ of an agent includes it`s action, observation and reward at a given timestep up until a the last registered timestep ${t-1}$. 
+
+The agent`s value-function is learned via back-propagation of the gradients resulting from applying the Q-learning rule on the joint reward and the local observations. $ \tilde{Q}_i $ is therefore independent of specific rewards.
+
+As a result each agent independently performs greedy actions based on it`s own $ \tilde{Q}_i $. \cite{sunehag2017value}
+
+"However, VDN severely limits the complexity of centralised action-value
+functions that can be represented and ignores any extra state information available during training. \cite{rashid2018qmix}"
+
+% SMIX proposed version to summarize VDN, QMIX, QTRAN and SMIX
+\begin{center}
+$Q_{t o t}(h, \mathbf{a} ; \theta)=\sum_{i=1}^{N} \alpha_{i} Q^{i}\left(h^{i}, a^{i} ; \theta^{i}\right), \alpha_{i} \geq 0$
+\end{center} \cite{wen2020smix}
+
+
+\subsection{QMIX - Monotonic Value Function Factorization}
+
+QMIX is another value-based method which trains decentralized policies in a centralized end-to-end learning step. Therefore a DQN estimates action-values as complex non-linear combination of per-agent values. The estimation uses local observations instead of a global fully-observed state during execution. 
+
+Since the joint-action value is strictly monotonic per agent, off-policy learning can benefit from maximisation of the joint-action value which results in consistency between centralized and decentralized policies. \cite{rashid2018qmix}
+
+\begin{center}
+$\frac{\partial Q}{\partial Q_{i}} \geq 0, \forall i$
+\end{center}
+
+\begin{itemize}
+	\item agent networks representing their respective $Q_{i}$-value, DRQNs that receive the current individual observation $s^{i}_{t}$ and the last action $a^{i}_{t-1}$ as input at each time step
+	
+	\item mixing network that combines agent values into Q, feed-forward neural network that	takes the agent network outputs as input and mixes them monotonically, producing the values of Q
+
+	\item enforcing monotonicity constraint of by restricting the mixing network to have	positive weights
+	
+	\item set of hypernetworks
+	
+	\item result:represent complex centralised action-value functions with a factored representation that scales well in the number of agents and allows
+	decentralised policies to be easily extracted via linear-time
+	individual argmax operations.
+	
+	\item for consistency we only need
+	to ensure that a global argmax performed on Qtot yields
+	the same result as a set of individual argmax operations
+	performed on each Qa :
+	
+\end{itemize}
+
+\begin{center}
+	\textbf{a} is joint action and \textbf{h} is joint action-observation history.
+$\underset{\mathbf{a}}{\operatorname{argmax}} Q(\textbf{h}, \mathbf{a})=\left(\begin{array}{c}\operatorname{argmax}_{a^{1}} Q_{1}\left(\textbf{h}^{1}, a^{1}\right) \\ \vdots \\ \operatorname{argmax}_{a^{n}} Q_{n}\left(\textbf{h}^{n}, a^{n}\right)\end{array}\right)$
+\end{center}
+
+\begin{center}
+	b is batch size of samples from the replay buffer
+	
+	$y^{\text {tot}}=r+\gamma \max _{\mathbf{u}^{\prime}} Q_{\text {tot}}\left(\boldsymbol{\tau}^{\prime}, \mathbf{u}^{\prime}, s^{\prime} ; \theta^{-}\right)$ and $\theta^{-}$ are targets of the target network.
+	
+	loss function:
+	
+$\mathcal{L}(\theta)=\sum_{i=1}^{b}\left[\left(y_{i}^{t o t}-Q(\textbf{h}, \mathbf{a}, s ; \theta)\right)^{2}\right]$
+\end{center}
+
+
+\subsection{SMIX - Enhanced Centralized Value Functions}
+
+% Code: https://github.com/chaovven/SMIX
+
+%Formulas
+\begin{center}
+$G_{t}^{\lambda}=(1-\lambda) \sum_{n=1}^{\infty} \lambda^{n-1} G_{t}^{(n)}$
+
+$G_{t}^{(n)}=r_{t+1}+\gamma r_{t+2}+\cdots+\gamma^{n} \mathbb{E}_{\boldsymbol{\pi}} Q\left(\boldsymbol{\tau}_{t+n}, \mathbf{a}_{t+n} ; \theta^{-}\right)$
+
+$\theta^{-}$ are parameters of the target network.
+
+\end{center}
+
+
+\subsection{QTRAN - }
+
+\subsection{CKL - Common Knowledge Learning}
+
+% Code: https://github.com/schroederdewitt/mackrl
+
+\subsection{COMA - Counterfactual Multi-Agent Policy Gradients}
+%TODO:
+\cite{foerster2017counterfactual}
+
+"At the other extreme, we can learn a fully centralised state-action value function Qtot and then use it to guide the optimisation of decentralised policies in an actor-critic framework, an approach taken by counterfactual multi-agent
+(COMA) policy gradients (Foerster et al., 2018), as well as work by Gupta et al. (2017). However, this requires on-policy learning, which can be sample-inefficient, and training the fully centralised critic becomes impractical when there are more than a handful of agents. COMA (Foerster et al., 2018) uses a centralised critic to train decentralised actors, estimating a counterfactual advantage function for each agent in order to address multi-agent credit assignment\cite{rashid2018qmix}"
 
 \section{StarCraftII Multi Agent Challenge Environment}
 
@@ -68,6 +276,9 @@ It should be noted that the default PyMARL reward function is not dividing it`s 
 
 \subsection{Rewards in Multi-Agent Reinforcement Learning}
 \cite{NIPS2005_2951} Shows that most algorithms "will need to see $\tilde{\Omega}(n)$ trajectories in the worst case to achieve good performance". An important definition arising from this paper is the neighborhood of an agent i, which describes the subset of agents that are directly influenced by agent i`s state.
+
+Whitehead 1991 Tan: n agents observing everything about each other decrease required learning time at rate of omega(1/n)
+
 
 \subsubsection{Credit Assignment Problem}
 % TODO: Describe problem via sources
@@ -190,7 +401,7 @@ All models and experiment metrics can be found at \url{https://github.com/PMatth
 
 
 \chapter{Conclusion}
- Problem: Environment -> only homogeneous agents and symmetric groups. heterogeneous groups require more selfless behaviour f.e. tanking, exploding, being the bait.
+ Problem: Environment $\rightarrow$ only homogeneous agents and symmetric groups. heterogeneous groups require more selfless behaviour f.e. tanking, exploding, being the bait.
  
 \chapter{Future work}
 The current implementation only used uniform unchangeable combine weights. Depending on the situation a agent might want to vary its combination to encourage a more selfish or more selfless behaviour.
